@@ -9,6 +9,18 @@ let deck = [];
 const tipos = ['C', 'D', 'H', 'S'];
 const especiales = ['A', 'J', 'Q', 'K'];
 
+let puntosJugador = 0;
+let puntosComputadora = 0;
+
+// Referencias al HTML
+const btnPedir = document.querySelector('#btnPedir');
+const btnNuevo = document.querySelector('#btnNuevo');
+const btnDetener = document.querySelector('#btnDetener');
+
+const puntosHTML = document.querySelectorAll('small');
+
+const divCartasJugador = document.querySelector('#jugador-cartas');
+
 // Crea una nueva baraja desordenada
 const createDeck = () => {
 
@@ -24,11 +36,7 @@ const createDeck = () => {
         }
     }
 
-    //console.log(deck);
-    // Desordena la baraja creada
     deck = _.shuffle(deck);
-    
-    console.log(deck);
 }
 
 createDeck();
@@ -39,8 +47,6 @@ const pedirCarta = () => {
         throw 'No hay cartas en el deck';
     }
     const carta = deck.pop();
-    console.log(carta);
-    console.log(deck);
     return carta;
 }
 
@@ -53,4 +59,24 @@ const valorCarta = (carta) => {
     return  ( isNaN(valor)) ? ((valor==='A') ? 11 : 10 ) : valor*1; 
 }
 
-console.log(valorCarta('6D'));
+
+// ***** EVENTOS *******
+
+btnPedir.addEventListener('click', () => {
+    
+    const carta = pedirCarta();
+    puntosJugador = puntosJugador + valorCarta(carta);
+    puntosHTML[0].innerText = puntosJugador;
+
+    const imgCarta = document.createElement('img');
+    imgCarta.src = `assets/cartas/${ carta }.png`;
+    imgCarta.classList.add('carta');
+    divCartasJugador.append(imgCarta);
+
+    if(puntosJugador > 21){
+        btnPedir.disabled = true;
+    }else if ( puntosJugador === 1){
+        btnPedir.disabled = true;
+    }
+    
+});
