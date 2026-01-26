@@ -1,1 +1,1 @@
-# BlackJack-javascript
+# Blackjack-Javascript
